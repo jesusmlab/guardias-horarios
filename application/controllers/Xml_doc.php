@@ -143,7 +143,12 @@ class Xml_doc extends CI_Controller
                          $tramonum = intval(substr($tramonum, 1, 1)) + 8;
                     }
                }
-               $datos = array("Codigo" => $tramos_horarios['X_TRAMO'], "Tramo" => $tramonum, "Inicio" => $tramos_horarios['N_INICIO'], "Fin" => $tramos_horarios['N_FIN']);
+               if (intval($tramos_horarios['X_TRAMO']) < 8) {
+                    $jor = "M";
+               } else {
+                    $jor = "V";
+               }
+               $datos = array("Codigo" => $tramos_horarios['X_TRAMO'], "Tramo" => $tramonum, "Inicio" => $tramos_horarios['N_INICIO'], "Fin" => $tramos_horarios['N_FIN'], "Jornada" => $jor);
                $this->tramos_horarios_m->insertar($datos);
           }
           // vaciar tabla unidades del centro
@@ -152,14 +157,17 @@ class Xml_doc extends CI_Controller
           // bucle por todos los unidades
           foreach ($tablas['UNIDADES'] as $unidades) {
                $datos = array("Codigo" => $unidades['X_UNIDAD'], "Descripcion" => $unidades['T_NOMBRE'], "Curso" => $unidades['X_OFERTAMATRIG']);
-               $this->grupos_m->insertar($datos);
+               // Ver si ya existe el codigo
+               if (!$this->grupos_m->get_grupo_cod($unidades['X_UNIDAD'])) {
+                    $this->grupos_m->insertar($datos);
+               }
           }
           // vaciar tabla profesores del centro
           $this->load->model("profesores_m");
           $this->profesores_m->vaciar();
           // bucle por todos los profesores
           foreach ($tablas['EMPLEADOS'] as $profesores) {
-               $datos = array("Codigo" => $profesores['X_EMPLEADO'], "TomaPosesion" => $profesores['F_TOMAPOS'], "Puesto" => $profesores['D_PUESTO'], "Apellido1" => $profesores['APELLIDO1'], "Apellido2" => $profesores['APELLIDO2'], "Nombre" => $profesores['NOMBRE'],"Sustituto" => '');
+               $datos = array("Codigo" => $profesores['X_EMPLEADO'], "TomaPosesion" => $profesores['F_TOMAPOS'], "Puesto" => $profesores['D_PUESTO'], "Apellido1" => $profesores['APELLIDO1'], "Apellido2" => $profesores['APELLIDO2'], "Nombre" => $profesores['NOMBRE'], "Sustituto" => '');
                $this->profesores_m->insertar($datos);
           }
 

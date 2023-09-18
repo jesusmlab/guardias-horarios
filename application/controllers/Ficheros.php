@@ -21,7 +21,7 @@ class Ficheros extends CI_Controller
         $datos['contenido'] = "subirfichero_v";
         $datos['titulo'] = "Tablas Auxiliares";
         $datos['tipo'] = "T";
-        $datos['error'] = "Esta operación vaciará todas las tablas auxiliares e importara en ellas el fichero XML elegido";
+        $datos['error'] = "Esta operación vaciará todas las tablas auxiliares e importara en ellas el fichero XML elegido. El nombre no podrá contener espacios ni caracteres especiales";
         $this->load->view('plantilla/plantilla', $datos);
     }
     public function subirHorarios()
@@ -29,7 +29,7 @@ class Ficheros extends CI_Controller
         $datos['contenido'] = "subirfichero_v";
         $datos['titulo'] = "Horarios";
         $datos['tipo'] = "H";
-        $datos['error'] = "Esta operación vaciará todos los horarios e importara el fichero XML elegido";
+        $datos['error'] = "Esta operación vaciará todos los horarios e importara el fichero XML elegido. El nombre no podrá contener espacios ni caracteres especiales";
         $this->load->view('plantilla/plantilla', $datos);
     }
 

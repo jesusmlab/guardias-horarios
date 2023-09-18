@@ -107,7 +107,8 @@ class Turnos extends CI_Controller
             $this->turnos_m->modificar_turnos($turno['id'], ['turno' => $contador]);
             $contador++;
         }
-        redirect($_SERVER['HTTP_REFERER']);
+        //redirect($_SERVER['HTTP_REFERER']);
+		redirect("turnos");
     }
     public function confirmar_correr_turnos()
     {
