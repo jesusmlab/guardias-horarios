@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Guardias">
     <meta name="author" content="JML">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <!-- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> -->
 
     <title>Guardias</title>
 
@@ -34,13 +34,13 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <?php
-foreach($css_files as $file): ?>
-    <link type="text/css" rel="stylesheet" href="<?php echo $file; ?>" />
+    foreach ($css_files as $file) : ?>
+        <link type="text/css" rel="stylesheet" href="<?php echo $file; ?>" />
     <?php endforeach; ?>
-    <?php foreach($js_files as $file): ?>
-    <script src="<?php echo $file; ?>"></script>
-    <?php endforeach; 
-?>
+    <?php foreach ($js_files as $file) : ?>
+        <script src="<?php echo $file; ?>"></script>
+    <?php endforeach;
+    ?>
     <!-- Bootstrap Core JavaScript -->
     <script src="<? echo base_url(); ?>assets/bs/js/bootstrap.min.js"></script>
 
@@ -55,18 +55,18 @@ foreach($css_files as $file): ?>
     <!-- Custom Bootstrap Select  -->
     <script src="<? echo base_url(); ?>assets/js/i18n/defaults-es_ES.js"></script>
     <?php
-$this->load->view("plantilla/menu");
-?>
+    $this->load->view("plantilla/menu");
+    ?>
     <div id="page-wrapper">
         <div class="container-fluid">
-            <h2><?php echo $titulo;?></h2>
+            <h2><?php echo $titulo; ?></h2>
             <div>
                 <?php echo $output; ?>
             </div>
         </div>
     </div>
     <?php
-    if (isset($cargar)){
+    if (isset($cargar)) {
         $this->load->view($cargar);
     }
-$this->load->view("plantilla/pie");
+    $this->load->view("plantilla/pie");

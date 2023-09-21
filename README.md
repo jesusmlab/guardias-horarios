@@ -33,8 +33,14 @@ EL acceso de administrador (Jefes de estudio y Director) permite el acceso a tod
 
 La instalación es la típica de una aplicación LAMP, basta con copiar la aplicación en una carpeta de nuestro servidor WEB, crear la BBDD con el script guardias.sql y ya está.
 
-Hay que configurar el fichero application/config/config.php con las credenciales de acceso a la BBDD.
+Se recomienda crear un usuario diferente s root en la BBDD (**guardias_user**, por ejemplo) con privilegios totales sobre la BBDD de guardias
 
-En el fichero .htaccess de la raiz del proyecto hay que modificar el nombre de la carpeta en la que hemos puesto nuestra aplicación. Por defecto es guardias
+Hay que configurar el fichero **application/config/config.php** con las credenciales de acceso a la BBDD.
 
-En el inicio hay un usuario profesor y otro admin, con las claves prf123456 y adm123456 respectivamente.
+Debemos asegurarnos de que en nuestro PHP tenemos activada la opcion short_open_tag, asi como que esté cargado el módulo de PHP xml-php
+
+En el fichero **.htaccess** del raiz, hay que modificar el nombre de la carpeta en la que hemos puesto nuestra aplicación. Por defecto es _guardias_
+
+Esta aplicación funciona redirigiendo todas las peticiones (excepto algunas) al fichero index.php del raiz mediante la sobreescritura de la URL, por lo que nos aseguraremos de que nuestro apache tenga instalado y activo dicho módulo (mod_rewrite).
+
+En el inicio hay un usuario **Profesor** y otro **admin**, con las claves _prf123456_ y _adm123456_ respectivamente.
