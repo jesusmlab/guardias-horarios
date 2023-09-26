@@ -28,6 +28,16 @@ class Faltas extends CI_Controller
                 $filtro = "";
             }
         }
+        if (isset($_REQUEST['cmbcausaex'])) {
+            $causaex = $_REQUEST['cmbcausaex'];
+            $this->session->set_flashdata('cmbcausaex', $causaex);
+        } else {
+            if (isset($_SESSION['cmbcausaex'])) {
+                $causaex = $_SESSION['cmbcausaex'];
+            } else {
+                $causaex = "";
+            }
+        }
 
 
         $regPerPag = 8; //Número de registros mostrados por páginas
@@ -48,7 +58,7 @@ class Faltas extends CI_Controller
         //cargamos la vista y el array data
         //$this->load->view('provincia_view', $data);
         $datos['profesores'] = $this->profesores_m->get_profesores();
-        $datos['faltas'] = $this->faltas_m->get_faltas_pag($config['per_page'], $this->uri->segment(3), $filtro);
+        $datos['faltas'] = $this->faltas_m->get_faltas_pag($config['per_page'], $this->uri->segment(3), $filtro, $causaex);
         $datos['causas'] = $this->causas_m->get_causas();
         $datos['contenido'] = "faltas_v";
         $datos['titulo'] = "Faltas";

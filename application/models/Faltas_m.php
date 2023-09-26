@@ -29,10 +29,13 @@ class Faltas_m  extends CI_Model
     //obtenemos todas las provincias a paginar con la función
     //total_posts_paginados pasando la cantidad por página y el segmento
     //como parámetros de la misma
-    function get_faltas_pag($por_pagina, $segmento, $filtro)
+    function get_faltas_pag($por_pagina, $segmento, $filtro, $causaex)
     {
         $this->db->order_by("fecha", "desc");
+        $this->db->where('causa !=', $causaex);
+        $this->db->group_start();
         $this->db->like('profesor', $filtro);
+        $this->db->group_end();
         $consulta = $this->db->get('faltas', $por_pagina, $segmento);
         if ($consulta->num_rows() > 0) {
             return $consulta->result_array();

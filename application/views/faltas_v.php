@@ -151,11 +151,11 @@
                             </div>
                         </div>
                     </form>
-                    <hr>
+                    <hr style="background-color:black;">
                     <form id="frmfiltro" name="frmfiltro" class="form-horizontal" action="<? echo base_url(); ?>faltas/index" method="get">
                         <div class="form-group">
                             <label for="cmbfiltro" class="col-xs-2">Filtrar por:</label>
-                            <div class="col-xs-6">
+                            <div class="col-xs-3">
 
                                 <select id="cmbfiltro" data-live-search="true" class="form-control selectpicker" name="cmbfiltro">
                                     <?php
@@ -174,6 +174,26 @@
                                         } else {
                                             $cadena .= "<option $sel value='" . $profe['Codigo'] . "'>" . $profe['Sustituto'] . "</option>";
                                         }
+                                    }
+                                    echo $cadena;
+                                    ?>
+                                </select>
+                            </div>
+
+                            <label for="cmbcausaex" class="col-xs-2">Ocultar:</label>
+                            <div class="col-xs-3">
+                                <select id="cmbcausaex" class="form-control" name="cmbcausaex">
+                                    <?php
+                                    $cadena = "<option value=''>Ninguna</option>";
+                                    foreach ($causas as $causa) {
+                                        if (isset($_SESSION['cmbcausaex'])) {
+                                            if ($causa['codigo'] == $_SESSION['cmbcausaex']) {
+                                                $sel = "selected";
+                                            } else {
+                                                $sel = "";
+                                            }
+                                        }
+                                        $cadena .= "<option $sel value='" . $causa['codigo'] . "'>" . $causa['descripcion'] . "</option>";
                                     }
                                     echo $cadena;
                                     ?>
@@ -219,7 +239,7 @@
                     ?>
                 </tbody>
             </table>
-            <div class="col-xs-offset-4 col-xs-4 col-xs-offset-4">
+            <div class="col-xs-offset-3 col-xs-6 col-xs-offset-3">
                 <ul class="pagination">
                     <?php
                     /* Se imprimen los números de página */
@@ -432,6 +452,9 @@
             });
     })
     $("#cmbfiltro").on("change", function(evento) {
+        document.frmfiltro.submit();
+    })
+    $("#cmbcausaex").on("change", function(evento) {
         document.frmfiltro.submit();
     })
     $("#tramo0").on("click", function(evento) {
