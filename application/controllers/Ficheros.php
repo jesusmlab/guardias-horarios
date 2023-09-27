@@ -41,6 +41,10 @@ class Ficheros extends CI_Controller
         //Tipos de ficheros permitidos
         $config['allowed_types'] = 'xml';
 
+		//Sobreescribir
+        $config['overwrite'] = TRUE;
+
+
         //Se pueden configurar aun mas parámetros.
         //Cargamos la librería de subida y le pasamos la configuración
         $this->load->library('upload', $config);
