@@ -66,7 +66,9 @@ class Xml_doc extends CI_Controller
      public function importarTAuxiliares($fichero)
      {
           // Cargar fichero xml
-          $xml = simplexml_load_file($_SERVER['DOCUMENT_ROOT'] . '/guardias/xml/' . $fichero);
+          $url_path = parse_url(base_url(), PHP_URL_PATH);
+          //$xml = simplexml_load_file($_SERVER['DOCUMENT_ROOT'] . '/guardias/xml/' . $fichero);
+          $xml = simplexml_load_file($_SERVER['DOCUMENT_ROOT'] . $url_path . '/xml/' . $fichero);
           // array de tablas
           $tablas = array();
           foreach ($xml->BLOQUE_DATOS->children() as $elementos) {
@@ -179,7 +181,9 @@ class Xml_doc extends CI_Controller
      {
 
           // Cargar fichero xml
-          $xml = simplexml_load_file($_SERVER['DOCUMENT_ROOT'] . '/guardias/xml/' . $fichero);
+          $url_path = parse_url(base_url(), PHP_URL_PATH);
+          //$xml = simplexml_load_file($_SERVER['DOCUMENT_ROOT'] . '/guardias/xml/' . $fichero);
+          $xml = simplexml_load_file($_SERVER['DOCUMENT_ROOT'] . $url_path . '/xml/' . $fichero);
           // array de tablas
           $tablas = array();
           foreach ($xml->BLOQUE_DATOS->children() as $elementos) {
