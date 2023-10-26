@@ -195,7 +195,12 @@
                                     if ($ind !== FALSE) {
                                         if ($casillas[$fila][$tramo]['Actividad'] == "Docencia") {
                                             $pos = strpos($casillas[$fila][$tramo]['Aula'], " ");
-                                            $aula = substr($casillas[$fila][$tramo]['Aula'], 0, $pos);
+                                            /* if (is_numeric($pos)) {
+                                                $aula = substr($casillas[$fila][$tramo]['Aula'], 0, $pos);
+                                            } else {
+                                                $aula = $casillas[$fila][$tramo]['Aula'];
+                                            } */
+                                            $aula = $casillas[$fila][$tramo]['Aula'];
                                             /* if ($casillas[$fila][$tramo]['Materia']!=""){
                                         echo "<span class='textoenf'>".$casillas[$fila][$tramo]['Materia']."</span><br/>";
                                     } */
@@ -283,76 +288,10 @@
                     ?>
                 </div>
             </div>
-            <div class="modal fade" id="anuncios" tabindex="-1" role="dialog" aria-labelledby="Anuncios" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div id="caranuncios" class="carousel slide" data-ride="carousel">
-                            <!-- Wrapper for slides -->
-                            <div class="carousel-inner">
-                                <?php
-                                $directory = $_SERVER['DOCUMENT_ROOT'] . "/guardias/assets/noticias";
-                                $dirint = dir($directory);
-                                $clase = " active";
-                                $direc = base_url() . "assets/noticias";
-                                while (($archivo = $dirint->read()) !== false) {
-                                    if (preg_match("/gif/i", $archivo) || preg_match("/jpg/i", $archivo) || preg_match("/png/i", $archivo)) {
-                                        echo '<div class="item' . $clase . '">';
-                                        $clase = "";
-                                        echo '<img class="img-responsive" src="' . $direc . "/" . $archivo . '">' . "\n";
-                                        echo '</div>';
-                                    }
-                                }
-                                $dirint->close();
-                                if ($clase != " active") {
-                                ?>
-                                    <div class="item" id="final">
-                                        <div class="carousel-caption">
-                                        </div>
-                                    </div>
-                                <?
-                                }
-                                ?>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
     <script>
-        if ($("#chkcarousel").prop("checked")) {
-            setTimeout(verCarousel, 5000);
-        }
-
-        function verCarousel() {
-            $("#anuncios").modal("show");
-
-            $("#caranuncios").carousel({
-                interval: 3000
-            });
-        }
-        $('#anuncios').on('slid.bs.carousel', function onSlide(ev) {
-            var id = ev.relatedTarget.id;
-            switch (id) {
-                case "final":
-                    $("#anuncios").modal("hide");
-                    /* if ($("#chkcarousel").prop("checked")) {
-                        setTimeout(verCarousel, 7000);
-                    } */
-                    clearTimeout();
-                    location.reload(true);
-                    break;
-                default:
-                    //the id is none of the above
-            }
-        })
-        $("#chkcarousel").on("click", function(evento) {
-            if ($("#chkcarousel").prop("checked")) {
-                setTimeout(verCarousel, 7000);
-            }
-        });
         $('html, body').animate({
             scrollTop: $('#page-wrapper').get(0).scrollHeight
         }, 10000, );

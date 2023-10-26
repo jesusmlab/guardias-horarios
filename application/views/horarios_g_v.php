@@ -38,7 +38,7 @@
         <div class="panel panel-primary">
             <!-- Contenido del panel -->
             <?php
-            $grupo_corr = $this->uri->segment(3, "");
+            $grupo_corr = urldecode($this->uri->segment(3, ""));
             /* if ($grupo_corr!=""){
                 $indice = array_search($prof_corr, array_column($profesores, 'Codigo'));
                 if (empty($profesores[$indice]['Sustituto'])) {
@@ -52,9 +52,9 @@
             ?>
             <div class="panel-heading">Horario del Grupo <?php echo $grupo_corr; ?>
                 <?
-                if ($grupo_corr!=""){
+                if ($grupo_corr != "") {
                 ?>
-                <button type="button" class="btn btn-default" onclick="window.print();"> Imprimir</button>
+                    <button type="button" class="btn btn-default" onclick="window.print();"> Imprimir</button>
                 <?
                 }
                 ?>
@@ -89,103 +89,103 @@
             </div>
 
             <?
-            if ($grupo_corr!=""){
+            if ($grupo_corr != "") {
                 //print_r($horario);
-                $dTramo=8;
-                $hTramo=0;
-                foreach ($horario as $horas){
-                    if ($horas['Tramo']<$dTramo){
-                        $dTramo=$horas['Tramo'];
+                $dTramo = 8;
+                $hTramo = 0;
+                foreach ($horario as $horas) {
+                    if ($horas['Tramo'] < $dTramo) {
+                        $dTramo = $horas['Tramo'];
                     }
-                    if ($horas['Tramo']>$hTramo){
-                        $hTramo=$horas['Tramo'];
+                    if ($horas['Tramo'] > $hTramo) {
+                        $hTramo = $horas['Tramo'];
                     }
                 }
                 //echo "Desde: ".$dTramo." Hasta: ".$hTramo;
                 // Inicializar Matriz casillas
-                for ($fila=1;$fila<6;$fila++){
-                for ($tramo=$dTramo;$tramo<=$hTramo;$tramo++){
-                    $casillas[$fila][$tramo][0]="";        
+                for ($fila = 1; $fila < 6; $fila++) {
+                    for ($tramo = $dTramo; $tramo <= $hTramo; $tramo++) {
+                        $casillas[$fila][$tramo][0] = "";
+                    }
                 }
-            }
-            // Igualar casillas a contenido del horario
-            foreach ($horario as $horas){
-                if ($casillas[$horas['DiaSem']][$horas['Tramo']][0]=="") {
-                    $casillas[$horas['DiaSem']][$horas['Tramo']][0]=$horas;
-                } else {
-                    $casillas[$horas['DiaSem']][$horas['Tramo']][1]=$horas;
+                // Igualar casillas a contenido del horario
+                foreach ($horario as $horas) {
+                    if ($casillas[$horas['DiaSem']][$horas['Tramo']][0] == "") {
+                        $casillas[$horas['DiaSem']][$horas['Tramo']][0] = $horas;
+                    } else {
+                        $casillas[$horas['DiaSem']][$horas['Tramo']][1] = $horas;
+                    }
                 }
-            }  
             ?>
 
-            <table class="table peque table-bordered">
-                <thead>
-                    <tr>
-                        <th>Tramo</th>
-                        <th class="cabecera-tabla">Lunes</th>
-                        <th class="cabecera-tabla">Martes</th>
-                        <th class="cabecera-tabla">Miercoles</th>
-                        <th class="cabecera-tabla">Jueves</th>
-                        <th class="cabecera-tabla">Viernes</th>
-                    </tr>
+                <table class="table peque table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Tramo</th>
+                            <th class="cabecera-tabla">Lunes</th>
+                            <th class="cabecera-tabla">Martes</th>
+                            <th class="cabecera-tabla">Miercoles</th>
+                            <th class="cabecera-tabla">Jueves</th>
+                            <th class="cabecera-tabla">Viernes</th>
+                        </tr>
 
-                </thead>
-                <tbody>
-                    <?php
-                    $tabla = "";;
-                    $tramo_budge = 0;
-                    for ($tramo = $dTramo; $tramo <= $hTramo; $tramo++) {
-                        $tabla .= "<tr>";
-                        //$tabla.="<th>".$tramosHorarios[$tramo]['Inicio']." - ".$tramosHorarios[$tramo]['Fin']."</th>";
-                        $hora = "";
-                        for ($fi = 1; $fi < 6; $fi++) {
-                            if (!empty($casillas[$fi][$tramo][0]['Inicio'])) {
-                                $hora = $casillas[$fi][$tramo][0]['Inicio'] . " - " . $casillas[$fi][$tramo][0]['Fin'];
-                                $tramo_budge += 1;
-                                break;
-                            }
-                        }
-
-                        $tabla .= "<th>" . $hora . "  <span class='badge'>" . $tramo_budge . "ª</span></th>";
-
-                        for ($fila = 1; $fila < 6; $fila++) {
-                            $tabla .= "<td class='celda-horario'>";
-                            $nfilas = count($casillas[$fila][$tramo]);
-                            for ($ind = 0; $ind < $nfilas; $ind++) {
-                                if (is_array($casillas[$fila][$tramo][$ind])) {
-                                    if ($casillas[$fila][$tramo][$ind]['Actividad'] != "Docencia") {
-                                        $tabla .= "<strong>Actividad:</strong>" . $casillas[$fila][$tramo][$ind]['Actividad'] . "<br/>";
-                                    }
-
-                                    if ($casillas[$fila][$tramo][$ind]['Materia'] != "") {
-                                        $tabla .= "<strong>Materia:</strong><span class='textoenf'>" . $casillas[$fila][$tramo][$ind]['Materia'] . "</span><br/>";
-                                    }
-                                    if ($casillas[$fila][$tramo][$ind]['Apenom'] != "") {
-                                        //$tabla.="<span class='peque'>".$casillas[$fila][$tramo][$ind]['Apenom']."</span><br/>";
-                                        $tabla .= "<strong><a class='peque' target='_blank' href='" . base_url() . "horarios/mostrar/" . $casillas[$fila][$tramo][$ind]['CodigoProf'] . "'>" . $casillas[$fila][$tramo][$ind]['Apenom'] . "</a></strong><br/>";
-                                    }
-
-                                    if ($casillas[$fila][$tramo][$ind]['Aula'] != "") {
-                                        $tabla .= "<strong>Aula&nbsp&nbsp:<a target='_blank' href='" . base_url() . "horarios/mostrar_aula/" . $casillas[$fila][$tramo][$ind]['Aula'] . "'>" . $casillas[$fila][$tramo][$ind]['Aula'] . "</a></strong>";
-                                        if (isset($casillas[$fila][$tramo][$ind + 1]['Aula'])) {
-                                            $tabla .= "<br/>";
-                                        }
-                                    }
-                                } else {
-                                    $tabla .= " ";
+                    </thead>
+                    <tbody>
+                        <?php
+                        $tabla = "";;
+                        $tramo_budge = 0;
+                        for ($tramo = $dTramo; $tramo <= $hTramo; $tramo++) {
+                            $tabla .= "<tr>";
+                            //$tabla.="<th>".$tramosHorarios[$tramo]['Inicio']." - ".$tramosHorarios[$tramo]['Fin']."</th>";
+                            $hora = "";
+                            for ($fi = 1; $fi < 6; $fi++) {
+                                if (!empty($casillas[$fi][$tramo][0]['Inicio'])) {
+                                    $hora = $casillas[$fi][$tramo][0]['Inicio'] . " - " . $casillas[$fi][$tramo][0]['Fin'];
+                                    $tramo_budge += 1;
+                                    break;
                                 }
                             }
-                            $tabla .= "</td>";
+
+                            $tabla .= "<th>" . $hora . "  <span class='badge'>" . $tramo_budge . "ª</span></th>";
+
+                            for ($fila = 1; $fila < 6; $fila++) {
+                                $tabla .= "<td class='celda-horario'>";
+                                $nfilas = count($casillas[$fila][$tramo]);
+                                for ($ind = 0; $ind < $nfilas; $ind++) {
+                                    if (is_array($casillas[$fila][$tramo][$ind])) {
+                                        if ($casillas[$fila][$tramo][$ind]['Actividad'] != "Docencia") {
+                                            $tabla .= "<strong>Actividad:</strong>" . $casillas[$fila][$tramo][$ind]['Actividad'] . "<br/>";
+                                        }
+
+                                        if ($casillas[$fila][$tramo][$ind]['Materia'] != "") {
+                                            $tabla .= "<strong>Materia:</strong><span class='textoenf'>" . $casillas[$fila][$tramo][$ind]['Materia'] . "</span><br/>";
+                                        }
+                                        if ($casillas[$fila][$tramo][$ind]['Apenom'] != "") {
+                                            //$tabla.="<span class='peque'>".$casillas[$fila][$tramo][$ind]['Apenom']."</span><br/>";
+                                            $tabla .= "<strong><a class='peque' target='_blank' href='" . base_url() . "horarios/mostrar/" . $casillas[$fila][$tramo][$ind]['CodigoProf'] . "'>" . $casillas[$fila][$tramo][$ind]['Apenom'] . "</a></strong><br/>";
+                                        }
+
+                                        if ($casillas[$fila][$tramo][$ind]['Aula'] != "") {
+                                            $tabla .= "<strong>Aula&nbsp&nbsp:<a target='_blank' href='" . base_url() . "horarios/mostrar_aula/" . $casillas[$fila][$tramo][$ind]['Aula'] . "'>" . $casillas[$fila][$tramo][$ind]['Aula'] . "</a></strong>";
+                                            if (isset($casillas[$fila][$tramo][$ind + 1]['Aula'])) {
+                                                $tabla .= "<br/>";
+                                            }
+                                        }
+                                    } else {
+                                        $tabla .= " ";
+                                    }
+                                }
+                                $tabla .= "</td>";
+                            }
+                            $tabla .= "</tr>";
                         }
-                        $tabla .= "</tr>";
-                    }
-                    echo $tabla;
-                    ?>
-                </tbody>
-            </table>
-            <? 
+                        echo $tabla;
+                        ?>
+                    </tbody>
+                </table>
+            <?
             }
-            
+
             ?>
         </div>
     </div>

@@ -125,66 +125,72 @@ function dateIsBetween($from, $to, $date = 'now')
                 for ($th = 1; $th <= 6; $th++) {
 
                     if (dateIsBetween($tramosHorarios[$th - 1]['Inicio'], $tramosHorarios[$th - 1]['Fin'], $ahora)) {
-                        $horaActiva = "horaActiva"; 
+                        $horaActiva = "horaActiva";
                     } else {
                         $horaActiva = "";
                     }
-					echo  "<th class='coltramo " . $horaActiva . "'>" . $tramosHorarios[$th - 1]['Inicio'] . " - " . $tramosHorarios[$th - 1]['Fin'] . "</th>";
+                    echo  "<th class='coltramo " . $horaActiva . "'>" . $tramosHorarios[$th - 1]['Inicio'] . " - " . $tramosHorarios[$th - 1]['Fin'] . "</th>";
                 }
                 for ($fila = 1; $fila <= $nfaltasDia[0]['nfaltas']; $fila++) {
-					if (!empty($casillas[$fila][0]['Apenom'])){
-   				   echo "<tr><td>";
-                    if (isset($casillas[$fila][0]['Sustituto'])) {
-                        echo $casillas[$fila][0]['Sustituto'] != "" ? $casillas[$fila][0]['Sustituto'] : $casillas[$fila][0]['Apenom'];
-                    }
+                    if (!empty($casillas[$fila][0]['Apenom'])) {
+                        echo "<tr><td>";
+                        if (isset($casillas[$fila][0]['Sustituto'])) {
+                            echo $casillas[$fila][0]['Sustituto'] != "" ? $casillas[$fila][0]['Sustituto'] : $casillas[$fila][0]['Apenom'];
+                        }
 
-                    echo "</td>";
-                    for ($tramo = 1; $tramo <= 6; $tramo++) {
-                        if (dateIsBetween($tramosHorarios[$tramo - 1]['Inicio'], $tramosHorarios[$tramo - 1]['Fin'], $ahora)) {
-                            $horaActiva = "horaActiva";
-                        } else {
-                            $horaActiva = "";
-                        }
-                        if (!empty($casillas[$fila][$tramo])) {
-                            echo "<td class='" . $horaActiva . "' style='text-align:center;vertical-align: middle;'>";
-                            // sacar solo si existe en los tramos
-                            $ind = strpos($casillas[$fila][$tramo]['tramos'], $casillas[$fila][$tramo]['Tramo']);
-                            if ($ind !== FALSE) {
-                                if ($casillas[$fila][$tramo]['Actividad'] == "Docencia") {
-                                    $pos = strpos($casillas[$fila][$tramo]['Aula'], " ");
-                                    $aula = substr($casillas[$fila][$tramo]['Aula'], 0, $pos);
-                                    if ($casillas[$fila][$tramo]['Materia'] != "") {
-                                        echo "<span class='textoenf'>" . $casillas[$fila][$tramo]['Materia'] . "</span><br/>";
-                                    }
-                                    echo "<strong>Grupo:</strong>" . $casillas[$fila][$tramo]['Unidad'] . " <strong>Aula:</strong>" . $aula . "</br>";
-                                    if ($casillas[$fila][$tramo]['anotacion' . $tramo] != "") {
-                                        echo "<span class='anotacion'>(" . $casillas[$fila][$tramo]['anotacion' . $tramo] . ")</span>";
-                                    }
-                                } else {
-                                    $porciones = explode(" ", $casillas[$fila][$tramo]['Actividad']);
-                                    $iniciales = "";
-                                    $bucle = 0;
-                                    foreach ($porciones as $palabras) {
-                                        $iniciales .= substr($palabras, 0, 1);
-                                        $bucle++;
-                                        if ($bucle > 3) {
-                                            break;
-                                        }
-                                    }
-                                    echo "<div title='" . $casillas[$fila][$tramo]['Actividad'] . "' class='circulo'>" . $iniciales . "</div>";
-                                    //echo "".substr($casillas[$fila][$tramo]['Actividad'],0,20)."</br>";
-                                }
+                        echo "</td>";
+                        for ($tramo = 1; $tramo <= 6; $tramo++) {
+                            if (dateIsBetween($tramosHorarios[$tramo - 1]['Inicio'], $tramosHorarios[$tramo - 1]['Fin'], $ahora)) {
+                                $horaActiva = "horaActiva";
+                            } else {
+                                $horaActiva = "";
                             }
-                            //echo $casillas[$fila][$tramo]['Unidad'];
-                            echo  "</td>";
-                        } else {
-                            echo "<td>";
-                            echo "";
-                            echo "</td>";
+                            if (!empty($casillas[$fila][$tramo])) {
+                                echo "<td class='" . $horaActiva . "' style='text-align:center;vertical-align: middle;'>";
+                                // sacar solo si existe en los tramos
+                                $ind = strpos($casillas[$fila][$tramo]['tramos'], $casillas[$fila][$tramo]['Tramo']);
+                                if ($ind !== FALSE) {
+                                    if ($casillas[$fila][$tramo]['Actividad'] == "Docencia") {
+                                        $pos = strpos($casillas[$fila][$tramo]['Aula'], " ");
+                                        //$aula = substr($casillas[$fila][$tramo]['Aula'], 0, $pos);
+                                        /* if (is_numeric($pos)) {
+                                            $aula = substr($casillas[$fila][$tramo]['Aula'], 0, $pos);
+                                        } else {
+                                            $aula = $casillas[$fila][$tramo]['Aula'];
+                                        } */
+                                        $aula = $casillas[$fila][$tramo]['Aula'];
+                                        if ($casillas[$fila][$tramo]['Materia'] != "") {
+                                            echo "<span class='textoenf'>" . $casillas[$fila][$tramo]['Materia'] . "</span><br/>";
+                                        }
+                                        echo "<strong>Grupo:</strong>" . $casillas[$fila][$tramo]['Unidad'] . " <strong>Aula:</strong>" . $aula . "</br>";
+                                        if ($casillas[$fila][$tramo]['anotacion' . $tramo] != "") {
+                                            echo "<span class='anotacion'>(" . $casillas[$fila][$tramo]['anotacion' . $tramo] . ")</span>";
+                                        }
+                                    } else {
+                                        $porciones = explode(" ", $casillas[$fila][$tramo]['Actividad']);
+                                        $iniciales = "";
+                                        $bucle = 0;
+                                        foreach ($porciones as $palabras) {
+                                            $iniciales .= substr($palabras, 0, 1);
+                                            $bucle++;
+                                            if ($bucle > 3) {
+                                                break;
+                                            }
+                                        }
+                                        echo "<div title='" . $casillas[$fila][$tramo]['Actividad'] . "' class='circulo'>" . $iniciales . "</div>";
+                                        //echo "".substr($casillas[$fila][$tramo]['Actividad'],0,20)."</br>";
+                                    }
+                                }
+                                //echo $casillas[$fila][$tramo]['Unidad'];
+                                echo  "</td>";
+                            } else {
+                                echo "<td>";
+                                echo "";
+                                echo "</td>";
+                            }
                         }
+                        echo "</tr>";
                     }
-                    echo "</tr>";
-					}
                 }
                 // Poner los profesores de guardia de cada tramo    
                 echo "<tr class='peque'><td>Profesores de Guardia</br>(Orden de actuación)";
@@ -234,14 +240,14 @@ function dateIsBetween($from, $to, $date = 'now')
                 echo "</td></tr>";
                 echo "</table>";
                 echo "</div>";
-                if (isset($_SESSION['logueado']) && $_SESSION['roll']=="admin") {
+                if (isset($_SESSION['logueado']) && $_SESSION['roll'] == "admin") {
                 ?>
-                <div>
-                    <div id="aviso1"><b>* Haz click sobre los profesores que hayan hecho guardia para
-                            registrarla</b></div>
-                    <div id="aviso2"><b>* El número entre paréntesis son las guardias
-                            que ha efectuado el profesor</b></div>
-                </div>
+                    <div>
+                        <div id="aviso1"><b>* Haz click sobre los profesores que hayan hecho guardia para
+                                registrarla</b></div>
+                        <div id="aviso2"><b>* El número entre paréntesis son las guardias
+                                que ha efectuado el profesor</b></div>
+                    </div>
                 <?
                 }
                 ?>
@@ -250,7 +256,7 @@ function dateIsBetween($from, $to, $date = 'now')
     </div>
 </div>
 <script>
-	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         location.href = "<? echo base_url(); ?>inicio/index_m";
     }
     $("#fecha").on("change", function(evento) {
